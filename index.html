@@ -1,11 +1,9 @@
 <html>
   <head>
     <script type="module">
-      // استيراد Firebase SDK
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-      import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
-      // تهيئة Firebase
       const firebaseConfig = {
         apiKey: "AIzaSyB_Tf7YgA6eSndC4uLrLWARlhBTf3IQIp8",
         authDomain: "shalehay-bde0f.firebaseapp.com",
@@ -19,7 +17,6 @@
       const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
 
-      // دالة لحفظ بيانات الحجز
       function saveBooking(name, phone, code) {
         set(ref(database, 'bookings/' + code), {
           name: name,
@@ -35,13 +32,11 @@
         });
       }
 
-      // دالة لعرض البيانات في أسفل النموذج
       function displayBooking(name, phone, code) {
         const displayDiv = document.getElementById("bookingDisplay");
-        displayDiv.innerHTML += `<p>تم الحجز لـ: ${name} - هاتف: ${phone} - كود الحجز: ${code}</p>`;
+        displayDiv.innerHTML += `<p>اسم العميل: ${name} - رقم الهاتف: ${phone} - كود الحجز: ${code}</p>`;
       }
 
-      // دالة معالجة إدخال البيانات
       function handleSubmit(event) {
         event.preventDefault();
         const name = event.target.name.value;
@@ -49,7 +44,6 @@
         const code = event.target.code.value;
         saveBooking(name, phone, code);
 
-        // مسح الحقول بعد الإرسال
         event.target.name.value = '';
         event.target.phone.value = '';
         event.target.code.value = '';
@@ -64,7 +58,6 @@
       <button type="submit">احجز الآن</button>
     </form>
 
-    <!-- قسم لعرض البيانات أسفل النموذج -->
     <div id="bookingDisplay" style="margin-top: 20px;">
       <h3>تفاصيل الحجز:</h3>
     </div>
