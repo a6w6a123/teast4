@@ -1,37 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday Cake</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="cake">
-        <!-- Cake Layers -->
-        <div class="cake-layer pink"></div>
-        <div class="cake-layer purple"></div>
-        <div class="cake-layer green"></div>
-        <div class="cake-layer copper"></div>
-        
-        <!-- Toppings -->
-        <div class="topping red" style="top: 50px; left: 30px;"></div>
-        <div class="topping yellow" style="top: 50px; left: 90px;"></div>
-        <div class="topping blue" style="top: 50px; right: 90px;"></div>
-        <div class="topping orange" style="top: 50px; right: 30px;"></div>
-        
-        <!-- Candle -->
-        <div class="candle">
-            <div class="flame"></div>
-            <div class="candle-stick"></div>
-        </div>
-        
-        <!-- Stick and Circle -->
-        <div class="stick"></div>
-        <div class="circle">
-            <p class="circle-text happy">Happy</p>
-            <p class="circle-text birthday">Birthday</p>
-        </div>
+<html>
+  <head>
+    <script type="module">
+      // استيراد Firebase SDK
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+      import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+
+      // تهيئة Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyB_Tf7YgA6eSndC4uLrLWARlhBTf3IQIp8",
+        authDomain: "shalehay-bde0f.firebaseapp.com",
+        projectId: "shalehay-bde0f",
+        storageBucket: "shalehay-bde0f.appspot.com",
+        messagingSenderId: "790800835364",
+        appId: "1:790800835364:web:56577d59c430cbae6089b1",
+        measurementId: "G-PDK521JPZD"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      // دالة لحفظ بيانات الحجز
+      function saveBooking(name, phone, code) {
+        set(ref(database, 'bookings/' + code), {
+          name: name,
+          phone: phone,
+          code: code
+        })
+        .then(() => {
+          console.log('تم حفظ البيانات بنجاح!');
+          displayBooking(name, phone, code);
+        })
+        .catch((error) => {
+          console.error('حدث خطأ أثناء حفظ البيانات:', error);
+        });
+      }
+
+      // دالة لعرض البيانات في أسفل النموذج
+      function displayBooking(name, phone, code) {
+        const displayDiv = document.getElementById("bookingDisplay");
+        displayDiv.innerHTML += `<p>تم الحجز لـ: ${name} - هاتف: ${phone} - كود الحجز: ${code}</p>`;
+      }
+
+      // دالة معالجة إدخال البيانات
+      function handleSubmit(event) {
+        event.preventDefault();
+        const name = event.target.name.value;
+        const phone = event.target.phone.value;
+        const code = event.target.code.value;
+        saveBooking(name, phone, code);
+      }
+    </script>
+  </head>
+  <body>
+    <form onsubmit="handleSubmit(event)">
+      <input type="text" name="name" placeholder="اسم العميل" required />
+      <input type="text" name="phone" placeholder="رقم الهاتف" required />
+      <input type="text" name="code" placeholder="كود الحجز" required />
+      <button type="submit">احجز الآن</button>
+    </form>
+
+    <!-- قسم لعرض البيانات أسفل النموذج -->
+    <div id="bookingDisplay" style="margin-top: 20px;">
+      <h3>تفاصيل الحجز:</h3>
     </div>
-</body>
+  </body>
 </html>
