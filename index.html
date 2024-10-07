@@ -48,6 +48,11 @@
         const phone = event.target.phone.value;
         const code = event.target.code.value;
         saveBooking(name, phone, code);
+
+        // مسح الحقول بعد الإرسال
+        event.target.name.value = '';
+        event.target.phone.value = '';
+        event.target.code.value = '';
       }
     </script>
   </head>
